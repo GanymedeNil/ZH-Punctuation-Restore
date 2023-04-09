@@ -38,6 +38,9 @@ def make_model_config():
 
 def get_tokenizer():
     tokenizer = BertTokenizerFast.from_pretrained('bert-base-chinese')
+    new_tokens = [chr(x) for x in range(ord('A'), ord('Z') + 1)]
+    new_tokens.append(" ")
+    tokenizer.add_tokens(new_tokens)
     return tokenizer
 
 
