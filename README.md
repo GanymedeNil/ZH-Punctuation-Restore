@@ -57,7 +57,12 @@ if __name__ == "__main__":
     model_name = 'p208p2002/zh-wiki-punctuation-restore'
     model = AutoModelForTokenClassification.from_pretrained(model_name)
     tokenizer = AutoTokenizer.from_pretrained(model_name)
-
+    
+    new_tokens = [chr(x) for x in range(ord('A'), ord('Z') + 1)]
+    new_tokens.append(" ")
+    tokenizer.add_special_tokens({'additional_special_tokens':new_tokens})
+    model.resize_token_embeddings(len(tokenizer))
+    
     model_pred_out = []
     for batch in dataloader:
         batch_out = predict_step(batch,model,tokenizer)
