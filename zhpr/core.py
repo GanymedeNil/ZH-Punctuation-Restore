@@ -40,7 +40,7 @@ def get_tokenizer():
     tokenizer = BertTokenizerFast.from_pretrained('bert-base-chinese')
     new_tokens = [chr(x) for x in range(ord('A'), ord('Z') + 1)]
     new_tokens.append(" ")
-    tokenizer.add_tokens(new_tokens)
+    tokenizer.add_special_tokens({'additional_special_tokens':new_tokens})
     return tokenizer
 
 
@@ -128,6 +128,7 @@ class ZhprBert(pl.LightningModule):
 
         self.model = get_model()
         self.tokenizer = get_tokenizer()
+        self.model.resize_token_embeddings(len(self.tokenizer))
 
     def training_step(self, batch, batch_idx):
         encodings = {
